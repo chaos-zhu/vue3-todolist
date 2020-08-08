@@ -1,0 +1,8 @@
+html {
+    height: 100%;
+    background: linear-gradient(to bottom, #ff5c7f 0%,#ff494d 100%);
+}
+
+body {
+    background-color: transparent!important;
+}
