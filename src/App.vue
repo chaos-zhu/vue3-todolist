@@ -2,20 +2,20 @@
 	<div id="wrap">
 		<h1>To-Do List By Vue3 <img src="./assets/retina.svg" class="logo" /></h1>
 		<div class="new-task">
-			<input type="text" v-model="taskDesc" placeholder="new task" class="form-control" />
+			<input type="text" v-model="taskDesc" placeholder="new task" @keyup.enter="addTask" class="form-control" />
 			<buttom class="btn btn-block btn-lg btn-danger" @click="addTask">Add Task</buttom>
 		</div>
         <transition enter-active-class="animated flipInX" appear>
             <div class="task-wrap">
                 <transition-group name="flip-list" mode="out-in" tag="div">
-                    <div class="to-do">
+                    <div class="to-do" key="to-do">
                         <h5 class="to-do-title">To-Do：</h5>
                         <Task v-for="(item, index) in toDo" :key="item.id" :task="item" @updateTask="updateTask"></Task>
                         <div class="task" v-show="notToDo">
                             <span class="complete-tips"><i class="fui-heart"></i>Great, everything is done~</span>
                         </div>
                     </div>
-                    <div class="completed">
+                    <div class="completed" key="completed">
                         <h5 class="complete-title">Complete：</h5>
                             <Task v-for="(item, index) in completed" :key="item.id" :task="item" @updateTask="updateTask"></Task>
                             <div class="task" v-show="notComplete">
