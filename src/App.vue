@@ -29,15 +29,18 @@
 </template>
 
 <script lang="ts">
-import { ref, setup, reactive, computed } from "vue"
+import { ref, setup, reactive, computed, onMounted } from "vue"
+import compositionApi from '../src/mixins/composition-api.js'
 import mixin from '../src/mixins/mixin.js'
+
 import Task from './components/Task.vue'
 
 export default {
 	name: 'App',
 	components: {Task},
-    setup() {
-        let { taskDesc, taskList, toDo, completed, notToDo, notComplete } = mixin()
+    mixins: [mixin],
+    setup(props, context) {
+        let { taskDesc, taskList, toDo, completed, notToDo, notComplete } = compositionApi()
 
         // let list = localStorage.getItem('taskList') ? JSON.parse(localStorage.getItem('taskList')) : [{name: 'test task1', id: 0, status: false}]
         // const taskDesc = ref('')
@@ -46,7 +49,9 @@ export default {
         // const completed = computed(() => taskList.filter(item => item.status))
         // const notToDo = computed(() => taskList.every(item => item.status))
         // const notComplete = computed(() => taskList.every(item => !item.status))
-
+        onMounted(() => {
+            // console.log(context)
+        })
         return {
             taskDesc,
             taskList,
@@ -55,6 +60,9 @@ export default {
             notToDo,
             notComplete
         }
+    },
+    created() {
+        console.log(this.mixinData)
     },
     methods: {
         addTask() {
@@ -66,7 +74,6 @@ export default {
         },
         updateTask({id, remove}) {
             let taskIndex = this.taskList.findIndex(item => item.id === id)
-            console.log(id, remove, taskIndex )
             if(remove) this.taskList.splice(taskIndex, 1)
             if(!remove) this.taskList[taskIndex].status = !this.taskList[taskIndex].status
             this.saveToLocal()
